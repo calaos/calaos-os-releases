@@ -1,0 +1,12 @@
+[Unit]
+Description=Calaos OS Releases Backend
+After=syslog.target
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/calaos-os-releases
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
