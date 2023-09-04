@@ -60,15 +60,27 @@ func NewApp() (a *AppServer, err error) {
 		return nil
 	})
 
+	a.appFiber.Get("/", func(c *fiber.Ctx) error {
+		return c.Redirect("https://calaos.fr")
+	})
+
 	//API
 	api := a.appFiber.Group("/v4")
 
-	api.Post("/images", func(c *fiber.Ctx) error {
+	api.Get("/images", func(c *fiber.Ctx) error {
 		return a.apiV4Images(c)
 	})
 
-	api.Post("/images-dev", func(c *fiber.Ctx) error {
+	api.Get("/images-dev", func(c *fiber.Ctx) error {
 		return a.apiV4ImagesDev(c)
+	})
+
+	api.Post("/image/:name", func(c *fiber.Ctx) error {
+		return a.apiV4ImageSet(c)
+	})
+
+	api.Post("/image-dev/:name", func(c *fiber.Ctx) error {
+		return a.apiV4ImageDevSet(c)
 	})
 
 	return

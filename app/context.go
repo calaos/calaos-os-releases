@@ -1,9 +1,9 @@
 package app
 
 import (
-	"os"
 	"strings"
 
+	"github.com/calaos/calaos-os-releases/config"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -28,26 +28,18 @@ func NewTokenMiddleware() fiber.Handler {
 				token = split[1]
 			}
 		}
-		c.Locals("token", token)
+
+		tokenStr = strings.TrimSpace(config.Config.String("general.update-token"))
 
 		if tokenStr == "" {
-			content, err := os.ReadFile(TOKEN_FILE)
-			if err != nil {
-				logging.Errorf("Error reading file %s: %s", TOKEN_FILE, err)
-				return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-					"error": true,
-					"msg":   err.Error(),
-				})
-			}
-			tokenStr = strings.TrimSpace(string(content))
+			logging.Fatal("update-token is not set in config!")
 		}
 
 		//Check token validity
 		if token != tokenStr {
-			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-				"error": true,
-				"msg":   "wrong token",
-			})
+			c.Locals("token-valid", false)
+		} else {
+			c.Locals("token-valid", true)
 		}
 
 		return c.Next()

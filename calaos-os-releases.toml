@@ -3,5 +3,8 @@
 port = 7000
 address = "0.0.0.0"
 
+#token for updating the image version
+update-token = "super-token-to-change"
+
 [database]
 sqlite="calaos-os-releases.db"
