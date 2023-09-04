@@ -23,6 +23,7 @@ var (
 		"general.port":    8000,
 		"general.address": "",
 		"log.default":     "info",
+		"database.sqlite": "calaos-os-releases.db",
 	}
 
 	//a dedicated logger must be used here to avoid conflict
